@@ -4,11 +4,13 @@ import React from 'react'
 import ReactDOMServer from 'react-dom/server'
 import { Provider } from 'react-redux'
 import { StaticRouter } from 'react-router'
+import Helmet from 'react-helmet'
 
 import initStore from './init-store'
 import App from './../shared/app'
 import { APP_CONTAINER_CLASS, STATIC_PATH, WDS_PORT } from '../shared/config'
 import { isProd } from '../shared/util'
+
 
 const renderApp = (location: string, plainPartialState: ?Object, routerContext: ?Object = {}) => {
   const store = initStore(plainPartialState)
@@ -19,12 +21,14 @@ const renderApp = (location: string, plainPartialState: ?Object, routerContext: 
       </StaticRouter>
     </Provider>)
 
+  const head = Helmet.rewind()
+
   return (
     `<!doctype html>
     <html>
       <head>
-        <title>FIX ME</title>
-        <link rel="stylesheet" href="${STATIC_PATH}/css/style.css">
+        ${head.title}
+        ${head.meta}
       </head>
       <body>
         <div class="${APP_CONTAINER_CLASS}">${appHtml}</div>
